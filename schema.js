@@ -1,7 +1,8 @@
-const { buildSchema } = require('graphql');
-const experimental = process.env.experimental
+const { buildSchema } = require("graphql");
+const experimental = process.env.experimental;
 
-const experimentalTypes = experimental ? `
+const experimentalTypes = experimental
+  ? `
 type Route {
   parts: [RoutePart!]!
   from: Station
@@ -27,11 +28,14 @@ type Product {
   productCode: Int
   productName: String
 }
-` : ''
+`
+  : "";
 
-const experimentalQuerys = experimental ? `
+const experimentalQuerys = experimental
+  ? `
   routing(from: Int!, to: Int!): [Route!]!
-` : ''
+`
+  : "";
 
 const schema = buildSchema(`
   type Query {
@@ -40,7 +44,7 @@ const schema = buildSchema(`
     stationWithEvaId(evaId: Int!): Station
     stationWithStationNumber(stationNumber: Int!): Station
     stationWithRill100(rill100: String!): Station
-
+    parkandride(latitude: Float!, longitude: Float!, radius: Int = 10000): Nearby!
     search(searchTerm: String): Searchable!
     nearby(latitude: Float!, longitude: Float!, radius: Int = 10000): Nearby!
     parkingSpace(id: Int): ParkingSpace
