@@ -109,14 +109,17 @@ const root = {
       travelCenterService
     ),
   parkandride: args =>
-    new NearbyQuery(
-      args.latitude,
-      args.longitude,
+    new ParkAndRide(
+      args.start_latitude,
+      args.start_longitude,
+      args.end_latitude,
+      args.end_longitude,
       args.radius,
       nearbyStationService,
       parkingspaceService,
       flinksterService,
-      travelCenterService
+      travelCenterService,
+      routingService
     )
 };
 

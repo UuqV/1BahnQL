@@ -44,7 +44,7 @@ const schema = buildSchema(`
     stationWithEvaId(evaId: Int!): Station
     stationWithStationNumber(stationNumber: Int!): Station
     stationWithRill100(rill100: String!): Station
-    parkandride(latitude: Float!, longitude: Float!, radius: Int = 10000): Nearby!
+    parkandride(start_latitude: Float!, start_longitude: Float!, end_latitude: Float!, end_longitude: Float!, radius: Int = 10000): Nearby!
     search(searchTerm: String): Searchable!
     nearby(latitude: Float!, longitude: Float!, radius: Int = 10000): Nearby!
     parkingSpace(id: Int): ParkingSpace
