@@ -1,5 +1,5 @@
 const { buildSchema } = require("graphql");
-const experimental = process.env.experimental;
+const experimental = true || process.env.experimental;
 
 const experimentalTypes = experimental
   ? `
@@ -44,7 +44,7 @@ const schema = buildSchema(`
     stationWithEvaId(evaId: Int!): Station
     stationWithStationNumber(stationNumber: Int!): Station
     stationWithRill100(rill100: String!): Station
-    parkandride(start_latitude: Float!, start_longitude: Float!, end_latitude: Float!, end_longitude: Float!, radius: Int = 10000): Nearby!
+    parkandride(start_latitude: Float!, start_longitude: Float!, end_latitude: Float!, end_longitude: Float!, radius: Int = 10000): ParkAndRide!
     search(searchTerm: String): Searchable!
     nearby(latitude: Float!, longitude: Float!, radius: Int = 10000): Nearby!
     parkingSpace(id: Int): ParkingSpace
@@ -200,6 +200,10 @@ const schema = buildSchema(`
     travelCenters (count: Int = 10, offset: Int = 0): [TravelCenter!]!
     flinksterCars (count: Int = 10, offset: Int = 0): [FlinksterCar!]!
     bikes (count: Int = 10, offset: Int = 0): [FlinksterBike!]!
+  }
+
+  type ParkAndRide {
+    routing (count: Int = 10, offset: Int = 0): [Route!]!
   }
 
   type ParkingSpace {

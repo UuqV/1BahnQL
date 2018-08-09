@@ -24,91 +24,27 @@ class ParkAndRide {
     this.routingSerivce = routingService;
   }
 
-  parkingSpaces(args) {
-    return this.parkingspaceService.nearbyParkingspaces(
-      this.start_latitude,
-      this.start_longitude,
-      this.radius,
-      args.count,
-      args.offset
-    );
-  }
-
-  travelCenters(args) {
-    return this.travelCenterService.travelCentersAtLocation(
-      this.start_latitude,
-      this.start_longitude,
-      this.radius,
-      args.count,
-      args.offset
-    );
-  }
-
-  flinksterCars(args) {
-    return this.flinksterService.nearbyFlinksterCars(
-      this.start_latitude,
-      this.start_longitude,
-      this.radius,
-      args.count,
-      args.offset
-    );
-  }
-
-  stations(args) {
-    //{
-    // "data": {
-    // "parkandride": {
-    //   "stations": [
-    //     {
-    //       "name": "Berlin Anhalter Bahnhof",
-    //       "location": {
-    //         "latitude": 52.503486,
-    //         "longitude": 13.381362
-    //       }
-    //     }
-    //   ]
-    // }
-    // }
-    // }
-
-    // [[Promise] , [Promise]]
-
-    const station1 = this.nearbyStationService
-      .stationNearby(
-        this.start_latitude,
-        this.start_longitude,
-        this.radius,
-        50,
-        args.offset
-      )
-      .then(res => Promise.all(res))
-      .then(stations => stations.filter(station => station.hasParking));
-
-    // Promise
-    const station2 = this.nearbyStationService
-      .stationNearby(
-        this.end_latitude,
-        this.end_longitude,
-        this.radius,
-        50,
-        args.offset
-      )
-      .then(res => Promise.all(res))
-      .then(stations =>
-        stations.filter(station => station.hasLocalPublicTransport)
-      );
-
-    return station1;
-  }
-
-  bikes(args) {
-    return this.flinksterService.nearbyFlinksterBikes(
-      this.start_latitude,
-      this.start_longitude,
-      this.radius,
-      args.count,
-      args.offset
-    );
+  routing(args) {
+    return Promise.all([
+      this.nearbyStationService
+        .startstation(this.start_latitude, this.start_longitude, this.radius)
+        .then(res => Promise.all(res)),
+      this.nearbyStationService
+        .endstation(this.end_latitude, this.end_longitude, this.radius)
+        .then(res => Promise.all(res))
+    ])
+      .then(stationlists => {
+        const startstations = stationlists[0];
+        const endstations = stationlists[1];
+        const tester = startstations[0].primaryEvaId;
+        return Promise.all([
+          this.routingSerivce.routes(
+            startstations[0].primaryEvaId,
+            endstations[0].primaryEvaId
+          )
+        ]);
+      })
+      .then(res => res[0]);
   }
 }
 

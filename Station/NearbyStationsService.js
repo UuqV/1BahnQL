@@ -107,6 +107,53 @@ class NearbyStationService {
 
     return promise;
   }
+
+  startstation(start_latitude, start_longitude, radius) {
+    //{
+    // "data": {
+    // "parkandride": {
+    //   "stations": [
+    //     {
+    //       "name": "Berlin Anhalter Bahnhof",
+    //       "location": {
+    //         "latitude": 52.503486,
+    //         "longitude": 13.381362
+    //       }
+    //     }
+    //   ]
+    // }
+    // }
+    // }
+
+    // [[Promise] , [Promise]]
+
+    const station1 = this.stationNearby(
+      start_latitude,
+      start_longitude,
+      radius,
+      10,
+      0
+    )
+      .then(res => Promise.all(res))
+      .then(stations => stations.filter(station => station.hasParking));
+    return station1;
+  }
+
+  endstation(end_latitude, end_longitude, radius) {
+    // Promise
+    const station2 = this.stationNearby(
+      end_latitude,
+      end_longitude,
+      radius,
+      10,
+      0
+    )
+      .then(res => Promise.all(res))
+      .then(stations =>
+        stations.filter(station => station.hasLocalPublicTransport)
+      );
+    return station2;
+  }
 }
 
 module.exports = NearbyStationService;
