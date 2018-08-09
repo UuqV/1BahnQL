@@ -24,8 +24,36 @@ Use your "Zugangstoken" as the DBDeveloperAuthorization Token and run the server
 Optional parameters:
 - DBBaseURL
 
-### Heroku Deploy
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/dennispost/1BahnQL])
+### ParkAndRide
+
+{
+  parkandride(start_latitude: 53.55, start_longitude: 9.99, end_latitude: 52.5, end_longitude: 13.4) {
+    routing {
+      parts {
+        delay
+      }
+      from {
+        name
+        location {
+          latitude
+          longitude
+        }
+        hasLocalPublicTransport
+        hasParking
+      }
+      to {
+        name
+        location {
+          latitude
+          longitude
+        }
+        hasLocalPublicTransport
+        hasParking
+      }
+    }
+  }
+}
+
 
 
 ## Data Sources
