@@ -38,12 +38,14 @@ class ParkAndRide {
         const endstations = stationlists[1];
         const tester = startstations[0].primaryEvaId;
         return Promise.all(
-          startstations.map((_, i) =>
-            this.routingSerivce.routes(
-              startstations[i].primaryEvaId,
-              endstations[i].primaryEvaId
+          startstations
+            .slice(0, 5)
+            .map((_, i) =>
+              this.routingSerivce.routes(
+                startstations[i].primaryEvaId,
+                endstations[i].primaryEvaId
+              )
             )
-          )
         );
       })
       .then(res => res.map(routes => routes[0]));
