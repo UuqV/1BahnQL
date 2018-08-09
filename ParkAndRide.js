@@ -78,10 +78,11 @@ class ParkAndRide {
         this.start_latitude,
         this.start_longitude,
         this.radius,
-        1,
+        50,
         args.offset
       )
-      .then(res => res[0]);
+      .then(res => Promise.all(res))
+      .then(stations => stations.filter(station => station.hasParking));
 
     // Promise
     const station2 = this.nearbyStationService
@@ -89,13 +90,15 @@ class ParkAndRide {
         this.end_latitude,
         this.end_longitude,
         this.radius,
-        1,
+        50,
         args.offset
       )
-      .then(res => res[0]);
-    //console.log(Promise.all([station1, station2]).then(console.log));
-    station2.then(console.log);
-    return Promise.all([station1, station2]);
+      .then(res => Promise.all(res))
+      .then(stations =>
+        stations.filter(station => station.hasLocalPublicTransport)
+      );
+
+    return station1;
   }
 
   bikes(args) {
