@@ -131,7 +131,7 @@ class NearbyStationService {
       start_latitude,
       start_longitude,
       radius,
-      20,
+      10,
       0
     )
       .then(res => Promise.all(res))
@@ -145,7 +145,7 @@ class NearbyStationService {
       end_latitude,
       end_longitude,
       radius,
-      20,
+      10,
       0
     )
       .then(res => Promise.all(res))
