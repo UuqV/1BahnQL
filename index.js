@@ -36,7 +36,7 @@ const ParkAndRide = require("./ParkAndRide");
 
 // --------- //
 
-const APIToken = process.env.APIToken;
+const APIToken = process.env.DBDeveloperAuthorization;
 const baseURL = process.env.DBBaseURL || "https://api.deutschebahn.com";
 
 // Loader
