@@ -34,6 +34,32 @@ class NearbyStationService {
     this.stationIdMappingService = new StationIdMappingService();
   }
 
+  routeDistance(route) {
+    return Promise.all(
+      route.parts.filter(part => part.fromEvaId && part.toEvaId).map(part =>
+        Promise.all([
+          this.stationIdMappingService.stationNumberByEvaId(part.fromEvaId),
+          this.stationIdMappingService.stationNumberByEvaId(part.toEvaId)
+        ])
+          .then(stationnumbers =>
+            Promise.all([
+              this.stationService.stationByBahnhofsnummer(stationnumbers[0]),
+              this.stationService.stationByBahnhofsnummer(stationnumbers[1])
+            ])
+          )
+          .then(stations =>
+            calculateDistance(
+              stations[0].location.latitude,
+              stations[0].location.longitude,
+              stations[1].location.latitude,
+              stations[1].location.longitude
+            )
+          )
+          .catch(err => 0)
+      )
+    ).then(promises => promises.reduce((sum, distance) => sum + distance, 0));
+  }
+
   allStationsSortedByDistance(latitude, longitude, radius, count, offset) {
     const promise = new Promise(resolve => {
       parse(

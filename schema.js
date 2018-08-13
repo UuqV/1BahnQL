@@ -209,7 +209,7 @@ const schema = buildSchema(`
     route: Route!
     from: Station
     to: Station
-    distance: Int
+    distance: Float
   }
 
   type ParkingSpace {

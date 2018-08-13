@@ -32,29 +32,34 @@ class ParkAndRide {
       this.nearbyStationService
         .endstation(this.end_latitude, this.end_longitude, this.radius)
         .then(res => Promise.all(res))
-    ])
-      .then(stationlists => {
-        const startstations = stationlists[0];
-        const endstations = stationlists[1];
-        const tester = startstations[0].primaryEvaId;
-        return Promise.all(
-          startstations
-            .slice(0, 5)
-            .map((_, i) =>
-              this.routingSerivce.routes(
-                startstations[i].primaryEvaId,
-                endstations[i].primaryEvaId
-              )
+    ]).then(stationlists => {
+      const startstations = stationlists[0];
+      const endstations = stationlists[1];
+      const tester = startstations[0].primaryEvaId;
+      return Promise.all(
+        startstations
+          .filter(station => station !== undefined)
+          .slice(0, 5)
+          .map((_, i) =>
+            this.routingSerivce.routes(
+              startstations[i].primaryEvaId,
+              endstations[i].primaryEvaId
             )
+          )
+      )
+        .then(routes => routes[0])
+        .then(eachroute =>
+          eachroute.map((_, i) => {
+            return {
+              route: _,
+              from: startstations[i],
+              to: endstations[i],
+              distance: this.nearbyStationService.routeDistance(_)
+            };
+          })
         );
-      })
-      .then(res => res.map(routes => routes[0]))
-      .then(res =>
-        res.map(routes => ({
-          route: routes,
-          distance: 10 //this.nearbyStationService.routeDistance(routes)
-        }))
-      );
+    });
+    //.then(console.log);
   }
 }
 
