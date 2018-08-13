@@ -48,7 +48,13 @@ class ParkAndRide {
             )
         );
       })
-      .then(res => res.map(routes => routes[0]));
+      .then(res => res.map(routes => routes[0]))
+      .then(res =>
+        res.map(routes => ({
+          route: routes,
+          distance: 10 //this.nearbyStationService.routeDistance(routes)
+        }))
+      );
   }
 }
 

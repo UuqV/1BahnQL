@@ -203,7 +203,13 @@ const schema = buildSchema(`
   }
 
   type ParkAndRide {
-    routing (count: Int = 10, offset: Int = 0): [Route!]!
+    routing (count: Int = 10, offset: Int = 0): [ParkAndRideRoute!]!
+  }
+  type ParkAndRideRoute {
+    route: Route!
+    from: Station
+    to: Station
+    distance: Int
   }
 
   type ParkingSpace {
